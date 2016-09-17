@@ -1,0 +1,24 @@
+{
+  "name": "offline-markdown-previewer",
+  "version": "0.0.1",
+  "description": "Viewing your favourite's project README just like if you viewed it in github.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudodoki/offline-markdown-previewer.git"
+  },
+  "keywords": [],
+  "author": "sudodoki <smd.deluzion@gmail.com> (sudodoki.name)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sudodoki/offline-markdown-previewer/issues"
+  },
+  "homepage": "https://github.com/sudodoki/offline-markdown-previewer#readme",
+  "dependencies": {
+    "github-markdown-css": "^2.4.0"
+  }
+}
