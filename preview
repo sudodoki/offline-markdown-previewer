@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler/setup'
+
+require 'thor'
+require 'kramdown'
+require 'erb'
+require 'ostruct'
+
+class OfflineMarkdownPreview < Thor
+  desc 'generate FILE', 'Generate HTML preview from Markdown FILE'
+  def generate(file)
+    file_path = File.expand_path(file, __dir__)
+
+    unless File.exists? file
+      puts "File #{file_path} does not exists!"
+      return 
+    end
+
+    file_content = File.read(file_path)
+    file_template = File.read('template.html.erb')
+    body = Kramdown::Document.new(file_content).to_html
+
+    OpenStruct.new(body: body).tap do |vars|
+      puts ERB.new(file_template).result(vars.instance_eval { binding })
+    end
+  end
+end
+
+OfflineMarkdownPreview.start
