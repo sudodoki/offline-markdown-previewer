@@ -20,5 +20,8 @@
   "homepage": "https://github.com/sudodoki/offline-markdown-previewer#readme",
   "dependencies": {
     "github-markdown-css": "^2.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.15.0"
   }
 }
