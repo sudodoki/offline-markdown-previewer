@@ -3,7 +3,7 @@
 Right now using ruby to do actual markdown generation
 
 + ruby 2.2.3 (use something like [rvm](https://rvm.io/))
-+ `gem install rdiscount`
++ `bundle install`
 
 Node for serving files
 
