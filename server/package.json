@@ -1,18 +1,21 @@
 {
-  "name": "offline-markdown-previewer",
+  "name": "omp-backend",
   "version": "0.0.1",
-  "description": "Viewing your favourite's project README just like if you viewed it in github.",
+  "description": "Backend subproject for offline-markdown-previewer",
   "main": "server.js",
+  "config" : { 
+    "port" : "8080" 
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "./server.js",
+    "start": "node ./server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sudodoki/offline-markdown-previewer.git"
   },
   "keywords": [],
-  "author": "sudodoki <smd.deluzion@gmail.com> (sudodoki.name)",
+  "author": "zonzujiro",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sudodoki/offline-markdown-previewer/issues"
@@ -22,6 +25,7 @@
     "github-markdown-css": "^2.4.0"
   },
   "devDependencies": {
-    "eslint": "^3.15.0"
+    "eslint": "^3.15.0",
+    "express": "^4.14.1"
   }
 }
