@@ -7,9 +7,9 @@ const fs = require('fs');
 const cwd = process.cwd()
 
 const executeChild = (file, cb) => {
-  const args = [file];
+  const args = ['generate', file];
   const options = {};
-  const child = spawn('./preview-cli', args, options);
+  const child = spawn('./preview', args, options);
   var outs = [], errs = [];
   child.stdout.on("data", function(data) {
       outs.push(data);
