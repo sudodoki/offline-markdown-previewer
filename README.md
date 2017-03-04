@@ -1,4 +1,4 @@
-# Offline Readme View
+# Offline Readme View [![Build Status](https://travis-ci.org/sudodoki/offline-markdown-previewer.svg?branch=master)](https://travis-ci.org/sudodoki/offline-markdown-previewer)
 
 Viewing your favourite's project README just like if you viewed it in github.
 
