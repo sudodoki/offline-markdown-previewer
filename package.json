@@ -5,5 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "concurrently --kill-others \"cd client && yarn start\" \"cd server && npm start\""
+  },
+  "devDependencies": {
+    "concurrently": "^3.4.0"
   }
 }
