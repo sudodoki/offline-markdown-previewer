@@ -1,41 +1,50 @@
 {
-    "env": {
-        "browser": true,
-        "commonjs": true,
-        "es6": true
+  "env": {
+    "browser": true,
+    "node": true,
+    "commonjs": true,
+    "es6": true
+  },
+  "globals": {
+    "__dirname": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "modules": true,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true,
+      "modules": true
     },
-    "globals": {
-        "__dirname": true
-    },
-    "extends": "eslint:recommended",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
-        },
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "quotes": [
+      "error",
+      "single"
     ],
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ],
-        "max-params": [
-            "error", 
-            3
-        ],
-        "no-console": 0
-    }
+    "semi": [
+      "error",
+      "always"
+    ],
+    "max-params": [
+      "error",
+      3
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "no-console": "off",
+    "no-undef": "error",
+    "no-dupe-keys": "error",
+    "no-unused-vars": "error",
+    "no-shadow": "error",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error"
+  }
 }

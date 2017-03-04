@@ -1,14 +1,13 @@
-const path = require('path')
-const express = require('express')
-const serveStatic = require('serve-static')
+const path = require('path');
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.use(express.static(path.resolve(__dirname, '../client')))
-app.listen(process.env.npm_package_config_port)
+app.use(express.static(path.resolve(__dirname, '../client')));
+app.listen(process.env.npm_package_config_port);
 
 app.get('/', (req, res) => {
-    res.send('Connected')
-})
+  res.send('Connected');
+});
 
-console.log(`Listening on ${process.env.npm_package_config_port}`)
+console.log(`Listening on ${process.env.npm_package_config_port}`);
