@@ -12,6 +12,10 @@
   },
   "devDependencies": {
     "concurrently": "^3.4.0",
+<<<<<<< HEAD
+    "eslint-plugin-react": "^6.10.0"
+  }
+=======
     "eslint": "^3.17.0",
     "eslint-plugin-react": "^6.10.0",
     "lint-staged": "^3.3.1",
@@ -20,4 +24,5 @@
   "pre-commit": [
     "lint-staged"
   ]
+>>>>>>> 7a51e8da5c7bbaaec587f913f14b6de4f1fa4c3b
 }
