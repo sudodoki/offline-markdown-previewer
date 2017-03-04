@@ -10,6 +10,7 @@
   "extends": "eslint:recommended",
   "parserOptions": {
     "ecmaVersion": 6,
+    "modules": true,
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
       "jsx": true
@@ -37,6 +38,8 @@
     "no-undef": "error",
     "no-dupe-keys": "error",
     "no-unused-vars": "error",
-    "no-shadow": "error"
+    "no-shadow": "error",
+    "react/jsx-uses-vars": 1,
+    "react/react-in-jsx-scope": 1
   }
 }
