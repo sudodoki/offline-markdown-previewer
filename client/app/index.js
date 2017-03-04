@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import './../public/styles/style.css'
+import App from './containers/'
 
 ReactDOM.render(
-    <h1>React launched</h1>,
+    <App/>,
     document.getElementById('root')
 )

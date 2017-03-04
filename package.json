@@ -16,5 +16,8 @@
   "dependencies": {
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
+  },
+  "scripts": {
+    "start": "cd client && npm start"
   }
 }
