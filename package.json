@@ -4,11 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently --kill-others \"cd client && yarn start\" \"cd server && npm start\""
+    "start": "concurrently --kill-others \"cd client && yarn start\" \"cd server && npm start\"",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": "eslint"
   },
   "devDependencies": {
     "concurrently": "^3.4.0",
     "eslint": "^3.17.0",
     "eslint-plugin-react": "^6.10.0"
-  }
+  },
+  "pre-commit": ["lint-staged"]
 }
