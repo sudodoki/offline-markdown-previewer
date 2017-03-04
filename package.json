@@ -18,6 +18,6 @@
     "react-dom": "^15.4.2"
   },
   "scripts": {
-    "start": "cd client && npm start"
+    "start": "concurrently --kill-others \"cd client && npm start\" \"cd server && npm start\""
   }
 }
