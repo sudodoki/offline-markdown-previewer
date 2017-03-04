@@ -7,9 +7,9 @@ new WebpackDevServer(webpack(config), {
   hot: true,
   historyApiFallback: true,
   contentBase: 'public/'
-}).listen(8000, 'localhost', function (error) {
+}).listen(process.env.npm_package_config_port, 'localhost', function (error) {
   if (error) {
     return console.log(error);
   }
-  console.log('Server running at http://localhost:8000/');
+  console.log(`Server running at http://localhost:${process.env.npm_package_config_port}/`);
 });
