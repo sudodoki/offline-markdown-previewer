@@ -4,6 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently --kill-others \"cd client && npm start\" \"cd server && npm start\""
+    "start": "concurrently --kill-others \"cd client && yarn start\" \"cd server && npm start\""
   }
 }

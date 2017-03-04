@@ -20,10 +20,6 @@
         "react"
     ],
     "rules": {
-        "indent": [
-            "error",
-            4
-        ],
         "quotes": [
             "error",
             "single"
@@ -36,6 +32,10 @@
             "error", 
             3
         ],
-        "no-console": 0
+        "no-console": 0,
+        "no-undef": "error",
+        "no-dupe-keys": "error",
+        "no-unused-vars": "error",
+        "no-shadow": "error"
     }
 }
