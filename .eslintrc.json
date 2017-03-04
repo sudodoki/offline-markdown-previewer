@@ -1,6 +1,7 @@
 {
   "env": {
     "browser": true,
+    "node": true,
     "commonjs": true,
     "es6": true
   },
@@ -27,13 +28,16 @@
     ],
     "semi": [
       "error",
-      "never"
+      "always"
     ],
     "max-params": [
       "error",
       3
     ],
-    "indent": ["error", 2],
+    "indent": [
+      "error",
+      2
+    ],
     "no-console": 0,
     "no-undef": "error",
     "no-dupe-keys": "error",
