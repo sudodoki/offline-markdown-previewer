@@ -14,7 +14,8 @@
     "concurrently": "^3.4.0",
     "eslint": "^3.17.0",
     "eslint-plugin-react": "^6.10.0",
-    "lint-staged": "^3.3.1"
+    "lint-staged": "^3.3.1",
+    "pre-commit": "^1.2.2"
   },
   "pre-commit": [
     "lint-staged"

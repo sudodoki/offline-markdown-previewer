@@ -13,7 +13,8 @@
     "ecmaVersion": 6,
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
-      "jsx": true
+      "jsx": true,
+      "modules": true
     },
     "sourceType": "module"
   },
@@ -37,10 +38,12 @@
       "error",
       2
     ],
-    "no-console": 0,
+    "no-console": "off",
     "no-undef": "error",
     "no-dupe-keys": "error",
     "no-unused-vars": "error",
-    "no-shadow": "error"
+    "no-shadow": "error",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error"
   }
 }
