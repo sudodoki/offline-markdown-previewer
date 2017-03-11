@@ -1,10 +1,9 @@
 {
-  "name": "react-test",
+  "name": "offline-markdown-previewer",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently --kill-others \"cd client && yarn start\" \"cd server && npm start\"",
+    "start": "concurrently --kill-others \"cd client && yarn start\" \"cd server && yarn start\"",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
