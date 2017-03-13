@@ -1,5 +1,7 @@
 const path = require('path');
 const express = require('express');
+
+const file = require('./file');
 const tree = require('./tree');
 
 const app = express();
@@ -13,6 +15,13 @@ app.use((req, res, next) => {
 app.use(express.static(path.resolve(__dirname, '../client/public')));
 
 app.listen(process.env.npm_package_config_port);
+
+app.get('/api/file', (req, res) => {
+  file.getFileContent(req.query.path).then(
+    files => res.send(files),
+    err => res.send(err.message)
+  );
+});
 
 app.get('/api/tree', (req, res) => {
   if (!req.query.path || !req.query.path.trim().length) {

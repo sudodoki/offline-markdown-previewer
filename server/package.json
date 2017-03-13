@@ -22,7 +22,10 @@
   },
   "homepage": "https://github.com/sudodoki/offline-markdown-previewer#readme",
   "dependencies": {
-    "github-markdown-css": "^2.4.0"
+    "github-markdown-css": "^2.4.0",
+    "remark": "^7.0.0",
+    "remark-html": "^6.0.0",
+    "remark-lint": "^6.0.0"
   },
   "devDependencies": {
     "express": "^4.14.1"
