@@ -1,6 +1,16 @@
+body {
+    min-width: 1020px;
+    word-wrap: break-word;
+}
+
 h3 {
     font-size: 20px;
     font-weight: 600;
+}
+
+a {
+    color: #0366d6;
+    text-decoration: none;
 }
 
 .markdown-body tt {
@@ -11,6 +21,12 @@ h3 {
     font-size: 85%;
     background-color: rgba(27,31,35,0.05);
     border-radius: 3px;
+}
+
+.markdown-body img {
+    max-width: 100%;
+    box-sizing: content-box;
+    background-color: #fff;
 }
 
 pre {
