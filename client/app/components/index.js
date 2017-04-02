@@ -1,7 +1,7 @@
 import React from 'react';
 import DirectoryContent from './DirectoryContent';
 import FilePreview from './FilePreview';
-import ErrorHandler from '../components/ErrorHandler';
+import ErrorHandler from './ErrorHandler';
 
 const Main = (props) => {
   const { 
