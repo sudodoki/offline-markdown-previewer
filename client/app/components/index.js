@@ -10,7 +10,7 @@ const Main = (props) => {
     onFileClick,
     errors,
     removeError,
-    fileHtml
+    currentFile
   } = props;
 
   return (
@@ -25,7 +25,7 @@ const Main = (props) => {
           onDirectoryClick={onDirectoryClick}
           onFileClick={onFileClick}
         />
-        <FilePreview fileHtml={fileHtml} />
+        <FilePreview currentFile={currentFile} />
     </div>
   );
 };
@@ -36,7 +36,8 @@ React.propTypes = {
   removeError: React.PropTypes.func,
   onDirectoryClick: React.PropTypes.func,
   onFileClick: React.PropTypes.func,
-  fileHtml: React.PropTypes.objectOf({
+  currentFile: React.PropTypes.objectOf({
+    title: React.PropTypes.string,
     __html: React.PropTypes.string
   })
 };
