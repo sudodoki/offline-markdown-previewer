@@ -2,35 +2,42 @@ const fs = require('fs');
 const remark = require('remark');
 const lint = require('remark-lint');
 const html = require('remark-html');
+const path = require('path');
 
-function getMarkdown(fileName) {
+function getUTF8String(fileName) {
   return new Promise((resolve, reject) => {
-    fs.readFile(fileName, (err, markdown) => {
-      if (!err) {
-        resolve(markdown.toString('utf-8'));
-      } else {
+    fs.readFile(fileName, (err, fileContent) => {
+      if (err) {
         reject(err.message);
       }
+
+      resolve(fileContent.toString('utf-8'));
     });
   });
+}
+
+function formResponse(content) {
+  return Promise.resolve({ content });
 }
 
 function applyRemark(markdown) {
   return new Promise((resolve, reject) => {
     remark().use(lint).use(html).process(markdown, (err, markdownHtml) => {
-      if (!err) {
-        resolve({
-          content: String(markdownHtml)
-        });
-      } else {
+      if (err) {
         reject(err.message);
       }
+
+      resolve(String(markdownHtml));
     });
   });
 }
 
-function getFileContent(filePath) {
-  return getMarkdown(filePath).then(applyRemark);
+function getFileContent(filePath) {  
+  if (path.extname(filePath) == '.md') {
+    return getUTF8String(filePath).then(applyRemark).then(formResponse);
+  }
+
+  return getUTF8String(filePath).then(formResponse);
 }
 
 module.exports = {
