@@ -9,10 +9,25 @@ class App extends React.Component {
 
     this.state = {
       directoryEntry: [],
+      errors: [],
       path: '?path=.'
     };
 
     this.onDirectoryClick = this.onDirectoryClick.bind(this);
+    this.handleError = this.handleError.bind(this);
+    this.removeError = this.removeError.bind(this);
+  }
+
+  handleError(msg) {
+    this.setState({
+      errors: this.state.errors.concat(msg)
+    });
+  }
+
+  removeError(text) {
+    this.setState({
+      errors: this.state.errors.filter(error => error != text)
+    });
   }
 
   onDirectoryClick(link) {
@@ -24,7 +39,7 @@ class App extends React.Component {
   }
 
   formNewState(newPath) {
-    return api.getTree(newPath).then(response => {
+    const handleResponse = (response) => {
       const newState = {
         directoryEntry: response,
         path: newPath
@@ -32,7 +47,11 @@ class App extends React.Component {
 
       this.setState(newState);
       return newState;
-    });
+    };
+
+    return api.getTree(newPath)
+      .then(handleResponse, this.handleError);
+
   }
 
   componentDidMount() {
@@ -45,10 +64,14 @@ class App extends React.Component {
   }
 
   render() {
+    const { errors, directoryEntry } = this.state;
+
     return (
       <Main 
-        directoryEntry={this.state.directoryEntry}
+        directoryEntry={directoryEntry}
         onDirectoryClick={this.onDirectoryClick}
+        errors={errors}
+        removeError={this.removeError}
       />
     );
   }
