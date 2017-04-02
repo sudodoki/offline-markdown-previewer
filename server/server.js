@@ -3,7 +3,6 @@ const express = require('express');
 const tree = require('./tree');
 
 const file = require('./file');
-const tree = require('./tree');
 
 const app = express();
 
@@ -28,6 +27,13 @@ app.get('/api/tree', (req, res) => {
       files => res.json(files),
       err => res.status(500).send(err.message)
     );
+});
+
+app.get('/api/file', (req, res) => {
+  file.getFileContent(req.query.path).then(
+     files => res.send(files),
+     err => res.send(err.message)
+   );
 });
 
 console.log(`Listening on ${process.env.npm_package_config_port}`);
