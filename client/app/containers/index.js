@@ -9,7 +9,8 @@ class App extends React.Component {
 
     this.state = {
       directoryEntry: [],
-      fileHtml: {
+      currentFile: {
+        title: '',
         __html: ''
       },
       errors: [],
@@ -44,7 +45,8 @@ class App extends React.Component {
 
     const handleResponse = (response) => {
       this.setState({
-        fileHtml: {
+        currentFile: {
+          title: link,
           __html: response.content
         }
       });
@@ -87,13 +89,13 @@ class App extends React.Component {
   }
 
   render() {
-    const { errors, directoryEntry, fileHtml } = this.state;
+    const { errors, directoryEntry, currentFile } = this.state;
 
     return (
       <Main 
         directoryEntry={directoryEntry}
         onDirectoryClick={this.onDirectoryClick}
-        fileHtml={fileHtml}
+        currentFile={currentFile}
         onFileClick={this.onFileClick}
         errors={errors}
         removeError={this.removeError}
