@@ -18,15 +18,20 @@ class App extends React.Component {
     this.removeError = this.removeError.bind(this);
   }
 
-  handleError(msg) {
+  handleError(res) {
+    const error = {
+      id: Date.now(),
+      text: `${res.status}: ${res.statusText}`
+    };
+
     this.setState({
-      errors: this.state.errors.concat(msg)
+      errors: this.state.errors.concat(error)
     });
   }
 
-  removeError(text) {
+  removeError(id) {
     this.setState({
-      errors: this.state.errors.filter(error => error != text)
+      errors: this.state.errors.filter(error => error.id != id)
     });
   }
 
@@ -51,7 +56,6 @@ class App extends React.Component {
 
     return api.getTree(newPath)
       .then(handleResponse, this.handleError);
-
   }
 
   componentDidMount() {
