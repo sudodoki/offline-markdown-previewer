@@ -4,7 +4,7 @@ const FileRow = (props) => {
   const { handleClick, name } = props;
 
   return (
-    <tr onClick={handleClick}>
+    <tr onClick={handleClick.bind(null, name)}>
       <td className='icon'>
         <i className='fa fa-file-text-o'></i>
       </td>

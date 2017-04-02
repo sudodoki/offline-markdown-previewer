@@ -1,13 +1,16 @@
 import React from 'react';
 import DirectoryContent from './DirectoryContent';
+import FilePreview from './FilePreview';
 import ErrorHandler from '../components/ErrorHandler';
 
 const Main = (props) => {
   const { 
     directoryEntry, 
     onDirectoryClick,
+    onFileClick,
     errors,
-    removeError
+    removeError,
+    fileHtml
   } = props;
 
   return (
@@ -20,7 +23,9 @@ const Main = (props) => {
         <DirectoryContent 
           directoryEntry={directoryEntry} 
           onDirectoryClick={onDirectoryClick}
+          onFileClick={onFileClick}
         />
+        <FilePreview fileHtml={fileHtml} />
     </div>
   );
 };
@@ -29,7 +34,11 @@ React.propTypes = {
   directoryEntry: React.PropTypes.array,
   errors: React.PropTypes.array,
   removeError: React.PropTypes.func,
-  onDirectoryClick: React.PropTypes.func
+  onDirectoryClick: React.PropTypes.func,
+  onFileClick: React.PropTypes.func,
+  fileHtml: React.PropTypes.objectOf({
+    __html: React.PropTypes.string
+  })
 };
 
 export default Main;

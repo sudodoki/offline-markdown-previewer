@@ -3,7 +3,7 @@ import FileRow from './FileRow';
 import DirectoryRow from './DirectoryRow';
 
 const DirectoryContent = (props) => {
-  const { directoryEntry, onDirectoryClick } = props;
+  const { directoryEntry, onDirectoryClick, onFileClick } = props;
 
   let files = directoryEntry.filter(entry => entry.type == 'file')
     .sort(file => file.name);
@@ -25,7 +25,7 @@ const DirectoryContent = (props) => {
             <FileRow 
               key={index} 
               {...file}
-              handleClick={console.log} 
+              handleClick={onFileClick} 
             />
           )}
         </tbody>
@@ -41,7 +41,8 @@ DirectoryContent.propTypes = {
       name: React.PropTypes.string
     })
   ),
-  onDirectoryClick: React.PropTypes.func
+  onDirectoryClick: React.PropTypes.func,
+  onFileClick: React.PropTypes.func
 };
 
 export default DirectoryContent;

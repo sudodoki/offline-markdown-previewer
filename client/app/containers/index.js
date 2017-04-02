@@ -9,11 +9,15 @@ class App extends React.Component {
 
     this.state = {
       directoryEntry: [],
+      fileHtml: {
+        __html: ''
+      },
       errors: [],
       path: '?path=.'
     };
 
     this.onDirectoryClick = this.onDirectoryClick.bind(this);
+    this.onFileClick = this.onFileClick.bind(this);
     this.handleError = this.handleError.bind(this);
     this.removeError = this.removeError.bind(this);
   }
@@ -33,6 +37,21 @@ class App extends React.Component {
     this.setState({
       errors: this.state.errors.filter(error => error.id != id)
     });
+  }
+
+  onFileClick(link) {
+    const newPath = `${this.state.path}/${link}`;
+
+    const handleResponse = (response) => {
+      this.setState({
+        fileHtml: {
+          __html: response.content
+        }
+      });
+    };
+
+    api.getFile(newPath)
+      .then(handleResponse, this.handleError);
   }
 
   onDirectoryClick(link) {
@@ -68,12 +87,14 @@ class App extends React.Component {
   }
 
   render() {
-    const { errors, directoryEntry } = this.state;
+    const { errors, directoryEntry, fileHtml } = this.state;
 
     return (
       <Main 
         directoryEntry={directoryEntry}
         onDirectoryClick={this.onDirectoryClick}
+        fileHtml={fileHtml}
+        onFileClick={this.onFileClick}
         errors={errors}
         removeError={this.removeError}
       />
