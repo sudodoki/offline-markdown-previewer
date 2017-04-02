@@ -12,9 +12,12 @@ const Main = (props) => {
 
   return (
     <div className='main-container'>
-        <ErrorHandler errors={errors} removeError={removeError} />
+        <ErrorHandler 
+          errors={errors} 
+          removeError={removeError} 
+        />
         <a href='https://github.com/sudodoki/offline-markdown-previewer'><h1>Offline Markdown Previewer</h1></a>
-        <DirectoryContent
+        <DirectoryContent 
           directoryEntry={directoryEntry} 
           onDirectoryClick={onDirectoryClick}
         />

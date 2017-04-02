@@ -9,10 +9,10 @@ const ErrorHandler = (props) => {
 
   return (
       <div className='error-handler'>
-        {errors.map((error, index) => 
+        {errors.map(error => 
           <ErrorMessage 
-            key={index}
-            errorMessage={error}
+            key={error.id}
+            error={error}
             removeError={removeError}
           />)
         }
