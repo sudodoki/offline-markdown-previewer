@@ -15,20 +15,22 @@ function getMarkdown(fileName) {
   });
 }
 
-function getFileContent() {
-  return getMarkdown('./TEST.md').then((markdown) => {
-    return new Promise((resolve, reject) => {
-      remark().use(lint).use(html).process(markdown, (err, markdownHtml) => {
-        if (!err) {
-          resolve({
-            content: String(markdownHtml)
-          });
-        } else {
-          reject(err.message);
-        }
-      });
+function applyRemark(markdown) {
+  return new Promise((resolve, reject) => {
+    remark().use(lint).use(html).process(markdown, (err, markdownHtml) => {
+      if (!err) {
+        resolve({
+          content: String(markdownHtml)
+        });
+      } else {
+        reject(err.message);
+      }
     });
   });
+}
+
+function getFileContent(filePath) {
+  return getMarkdown(filePath).then(applyRemark);
 }
 
 module.exports = {
