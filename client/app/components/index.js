@@ -10,7 +10,8 @@ const Main = (props) => {
     onFileClick,
     errors,
     removeError,
-    currentFile
+    currentFile,
+    goBack
   } = props;
 
   return (
@@ -24,8 +25,9 @@ const Main = (props) => {
           directoryEntry={directoryEntry} 
           onDirectoryClick={onDirectoryClick}
           onFileClick={onFileClick}
+          goBack={goBack}
         />
-        <FilePreview currentFile={currentFile} />
+        {currentFile.title && <FilePreview currentFile={currentFile} />}
     </div>
   );
 };
@@ -36,6 +38,7 @@ React.propTypes = {
   removeError: React.PropTypes.func,
   onDirectoryClick: React.PropTypes.func,
   onFileClick: React.PropTypes.func,
+  goBack: React.PropTypes.func,
   currentFile: React.PropTypes.objectOf({
     title: React.PropTypes.string,
     __html: React.PropTypes.string
