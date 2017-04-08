@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "concurrently --kill-others \"cd client && yarn start\" \"cd server && yarn start\"",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "build": "cd client && SET BABEL_ENV=production && ./node_modules/.bin/webpack --config webpack.config.production.js"
   },
   "lint-staged": {
     "*.js": "eslint"
