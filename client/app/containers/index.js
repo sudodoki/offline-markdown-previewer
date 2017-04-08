@@ -19,6 +19,7 @@ class App extends React.Component {
 
     this.getRootReadme = this.getRootReadme.bind(this);
     this.onDirectoryClick = this.onDirectoryClick.bind(this);
+    this.traverseToParent = this.traverseToParent.bind(this);
     this.onFileClick = this.onFileClick.bind(this);
     this.getFile = this.getFile.bind(this);
     this.handleError = this.handleError.bind(this);
@@ -41,6 +42,22 @@ class App extends React.Component {
   removeError(id) {
     this.setState({
       errors: this.state.errors.filter(error => error.id != id)
+    });
+  }
+
+  traverseToParent() {
+    let newPath = this.state.path.split('/');
+    
+    if (newPath.length == 1 || newPath[newPath.length - 1] == '..') {
+      newPath = newPath.concat('..').join('/');
+    
+    } else {
+      newPath.pop();
+      newPath = newPath.join('/');
+    }
+
+    this.formNewState(newPath).then(newState => {
+      window.history.pushState(newState, null, newPath);
     });
   }
 
@@ -124,6 +141,7 @@ class App extends React.Component {
     return (
       <Main 
         directoryEntry={directoryEntry}
+        goTop={this.traverseToParent}
         onDirectoryClick={this.onDirectoryClick}
         currentFile={currentFile}
         onFileClick={this.onFileClick}
