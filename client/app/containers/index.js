@@ -32,7 +32,7 @@ class App extends React.Component {
     };
 
     console.error(res);
-
+    
     this.setState({
       errors: this.state.errors.concat(error)
     });
