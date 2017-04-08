@@ -17,8 +17,10 @@ class App extends React.Component {
       path: '?path=.'
     };
 
+    this.getRootReadme = this.getRootReadme.bind(this);
     this.onDirectoryClick = this.onDirectoryClick.bind(this);
     this.onFileClick = this.onFileClick.bind(this);
+    this.getFile = this.getFile.bind(this);
     this.handleError = this.handleError.bind(this);
     this.removeError = this.removeError.bind(this);
   }
@@ -28,6 +30,8 @@ class App extends React.Component {
       id: Date.now(),
       text: `${res.status}: ${res.statusText}`
     };
+
+    console.error(res);
 
     this.setState({
       errors: this.state.errors.concat(error)
@@ -41,19 +45,39 @@ class App extends React.Component {
   }
 
   onFileClick(link) {
-    const newPath = `${this.state.path}/${link}`;
+    this.getFile(this.state.path, link).then(file => this.setState(file));
+  }
+
+  getFile(path, title) {
+    const newPath = `${path}/${title}`;
 
     const handleResponse = (response) => {
-      this.setState({
+      return {
         currentFile: {
-          title: link,
+          title,
           __html: response.content
         }
-      });
+      };
     };
 
-    api.getFile(newPath)
+    return api.getFile(newPath)
       .then(handleResponse, this.handleError);
+  }
+
+  getRootReadme(newState) {
+    const rootReadme = 'README.md';
+
+    const isReadme = newState.directoryEntry.find(entry => 
+      (entry.type == 'file' && entry.name == rootReadme));
+
+    const addFile = file => Object.assign({}, newState, file);
+
+    if (isReadme) {
+      return this.getFile(newState.path, rootReadme).then(addFile);
+    
+    } else {
+      return newState;
+    }
   }
 
   onDirectoryClick(link) {
@@ -65,18 +89,24 @@ class App extends React.Component {
   }
 
   formNewState(newPath) {
-    const handleResponse = (response) => {
+    const handleResponse = response => {
       const newState = {
         directoryEntry: response,
         path: newPath
       };
 
+      return newState;
+    };
+
+    const passState = newState => {
       this.setState(newState);
       return newState;
     };
 
     return api.getTree(newPath)
-      .then(handleResponse, this.handleError);
+      .then(handleResponse)
+      .then(this.getRootReadme)
+      .then(passState);
   }
 
   componentDidMount() {
@@ -84,8 +114,8 @@ class App extends React.Component {
 
     this.formNewState(newPath).then(newState => {
       window.history.replaceState(newState, null, newPath);
-      window.onpopstate = event => this.setState(event.state);
-    });
+      window.onpopstate = ({ state }) => this.setState(state);
+    }).catch(this.handleError);
   }
 
   render() {

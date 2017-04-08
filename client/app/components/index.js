@@ -31,15 +31,15 @@ const Main = (props) => {
 };
 
 React.propTypes = {
-  directoryEntry: React.PropTypes.array,
-  errors: React.PropTypes.array,
-  removeError: React.PropTypes.func,
-  onDirectoryClick: React.PropTypes.func,
-  onFileClick: React.PropTypes.func,
+  directoryEntry: React.PropTypes.array.isRequired,
+  errors: React.PropTypes.array.isRequired,
+  removeError: React.PropTypes.func.isRequired,
+  onDirectoryClick: React.PropTypes.func.isRequired,
+  onFileClick: React.PropTypes.func.isRequired,
   currentFile: React.PropTypes.objectOf({
-    title: React.PropTypes.string,
-    __html: React.PropTypes.string
-  })
+    title: React.PropTypes.string.isRequired,
+    __html: React.PropTypes.string.isRequired
+  }).isRequired
 };
 
 export default Main;
