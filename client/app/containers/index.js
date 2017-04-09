@@ -45,7 +45,7 @@ class App extends React.Component {
 
     const mapToState = response => this.setState(response);
 
-    api.getFile(path).then(mapToState, this.handleError);
+    api.getFile(path).then(mapToState).catch(this.handleError);
   }
 
   onDirectoryClick(title) {
@@ -57,17 +57,14 @@ class App extends React.Component {
   }
 
   formNewState(newPath) {
-    const handleResponse = response => 
-      Object.assign({}, response, { path: newPath });
+    const mapToState = response => {
+      const newState = Object.assign({}, response, { path: newPath });
 
-    const passState = newState => {
       this.setState(newState);
       return newState;
     };
 
-    return api.getTree(newPath)
-      .then(handleResponse)
-      .then(passState);
+    return api.getTree(newPath).then(mapToState).catch(this.handleError);
   }
 
   componentDidMount() {
