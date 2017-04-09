@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const file = require('./file');
 
 function isFile(content) {
   return new Promise((resolve, reject) => {
@@ -43,26 +42,8 @@ function readDirectory(directoryPath) {
   });
 }
 
-function getRootReadme(response, directoryPath) {
-  const rootReadme = 'README.md';
-
-  const isReadme = response.directoryEntry.find(entry => 
-    (entry.type == 'file' && entry.name == rootReadme));
-
-  const assignFile = fileContent => Object.assign({}, response, fileContent);
-
-  if (isReadme) {
-    return file.getFileContent(`${directoryPath}/${rootReadme}`).then(assignFile);
-  
-  } else {
-    return response;
-  }
-}
-
 function getDirectoryContent(directoryPath) {
-  return readDirectory(directoryPath)
-    .then(entry => formResponse(entry, directoryPath))
-    .then(response => getRootReadme(response, directoryPath));
+  return readDirectory(directoryPath).then(entry => formResponse(entry, directoryPath));
 }
 
 module.exports = {

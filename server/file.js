@@ -45,6 +45,23 @@ function getFileContent(filePath) {
   return getUTF8String(filePath).then(content => formResponse(content, filePath));
 }
 
+function getRootReadme(directory, directoryPath) {
+  const rootReadme = 'README.md';
+
+  const isReadme = directory.directoryEntry.find(entry => 
+    (entry.type == 'file' && entry.name == rootReadme));
+
+  const assignFile = fileContent => Object.assign({}, directory, fileContent);
+
+  if (isReadme) {
+    return getFileContent(`${directoryPath}/${rootReadme}`).then(assignFile);
+  
+  } else {
+    return directory;
+  }
+}
+
 module.exports = {
-  getFileContent
+  getFileContent,
+  getRootReadme
 };
