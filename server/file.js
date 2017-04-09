@@ -51,14 +51,9 @@ function getRootReadme(directory, directoryPath) {
   const isReadme = directory.directoryEntry.find(entry => 
     (entry.type == 'file' && entry.name == rootReadme));
 
-  const assignFile = fileContent => Object.assign({}, directory, fileContent);
-
-  if (isReadme) {
-    return getFileContent(`${directoryPath}/${rootReadme}`).then(assignFile);
-  
-  } else {
-    return directory;
-  }
+  return isReadme
+    ? getFileContent(`${directoryPath}/${rootReadme}`)
+    : Promise.resolve({});
 }
 
 module.exports = {
