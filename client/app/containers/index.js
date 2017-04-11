@@ -59,7 +59,6 @@ class App extends React.Component {
 
   onFileClick(title) {
     const path = `${this.state.path}/${title}`;
-
     const mapToState = response => this.setState(response);
 
     api.getFile(path).then(mapToState).catch(this.handleError);
