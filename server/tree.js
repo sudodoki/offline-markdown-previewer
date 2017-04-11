@@ -14,15 +14,20 @@ function isFile(content) {
 }
 
 function formResponse(directoryContent, directoryPath) {
-  return Promise.all(directoryContent.map(entry => {
-    return isFile(path.resolve(directoryPath, entry))
-      .then(ifFile => {
-        return {
-          type: ifFile ? 'file' : 'directory',
-          name: entry
-        };
-      });
-  }));
+  return extract(directoryContent, directoryPath)
+    .then(directoryEntry => ({ directoryEntry }));
+
+  function extract(dirCon, dirPath) {
+    return Promise.all(dirCon.map(entry => {
+      return isFile(path.resolve(dirPath, entry))
+        .then(ifFile => {
+          return {
+            type: ifFile ? 'file' : 'directory',
+            name: entry
+          };
+        });
+    }));
+  }
 }
 
 function readDirectory(directoryPath) {

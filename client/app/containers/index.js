@@ -9,14 +9,47 @@ class App extends React.Component {
 
     this.state = {
       directoryEntry: [],
+      currentFile: {
+        title: '',
+        __html: ''
+      },
+      errors: [],
       path: '?path=.'
     };
 
     this.onDirectoryClick = this.onDirectoryClick.bind(this);
+    this.onFileClick = this.onFileClick.bind(this);
+    this.handleError = this.handleError.bind(this);
+    this.removeError = this.removeError.bind(this);
   }
 
-  onDirectoryClick(link) {
-    const newPath = `${this.state.path}/${link}`;
+  handleError(res) {
+    const error = {
+      id: Date.now(),
+      text: `${res.status}: ${res.statusText}`
+    };
+    
+    this.setState({
+      errors: this.state.errors.concat(error)
+    });
+  }
+
+  removeError(id) {
+    this.setState({
+      errors: this.state.errors.filter(error => error.id != id)
+    });
+  }
+
+  onFileClick(title) {
+    const path = `${this.state.path}/${title}`;
+
+    const mapToState = response => this.setState(response);
+
+    api.getFile(path).then(mapToState).catch(this.handleError);
+  }
+
+  onDirectoryClick(title) {
+    const newPath = `${this.state.path}/${title}`;
 
     this.formNewState(newPath).then(newState => {
       window.history.pushState(newState, null, newPath);
@@ -24,15 +57,14 @@ class App extends React.Component {
   }
 
   formNewState(newPath) {
-    return api.getTree(newPath).then(response => {
-      const newState = {
-        directoryEntry: response,
-        path: newPath
-      };
+    const mapToState = response => {
+      const newState = Object.assign({}, response, { path: newPath });
 
       this.setState(newState);
       return newState;
-    });
+    };
+
+    return api.getTree(newPath).then(mapToState).catch(this.handleError);
   }
 
   componentDidMount() {
@@ -40,15 +72,21 @@ class App extends React.Component {
 
     this.formNewState(newPath).then(newState => {
       window.history.replaceState(newState, null, newPath);
-      window.onpopstate = event => this.setState(event.state);
-    });
+      window.onpopstate = ({ state }) => this.setState(state);
+    }).catch(this.handleError);
   }
 
   render() {
+    const { errors, directoryEntry, currentFile } = this.state;
+
     return (
       <Main 
-        directoryEntry={this.state.directoryEntry}
+        directoryEntry={directoryEntry}
         onDirectoryClick={this.onDirectoryClick}
+        currentFile={currentFile}
+        onFileClick={this.onFileClick}
+        errors={errors}
+        removeError={this.removeError}
       />
     );
   }
