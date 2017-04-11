@@ -10,7 +10,8 @@ const Main = (props) => {
     onFileClick,
     errors,
     removeError,
-    currentFile
+    currentFile,
+    goTop
   } = props;
 
   return (
@@ -20,7 +21,8 @@ const Main = (props) => {
           removeError={removeError} 
         />
         <a href='https://github.com/sudodoki/offline-markdown-previewer'><h1>Offline Markdown Previewer</h1></a>
-        <DirectoryContent 
+        <DirectoryContent
+          goTop={goTop}
           directoryEntry={directoryEntry} 
           onDirectoryClick={onDirectoryClick}
           onFileClick={onFileClick}
@@ -36,6 +38,7 @@ React.propTypes = {
   removeError: React.PropTypes.func.isRequired,
   onDirectoryClick: React.PropTypes.func.isRequired,
   onFileClick: React.PropTypes.func.isRequired,
+  goTop: React.PropTypes.func.isRequired,
   currentFile: React.PropTypes.objectOf({
     title: React.PropTypes.string.isRequired,
     __html: React.PropTypes.string.isRequired
