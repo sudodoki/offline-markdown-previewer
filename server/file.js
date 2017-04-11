@@ -16,8 +16,13 @@ function getUTF8String(fileName) {
   });
 }
 
-function formResponse(content) {
-  return Promise.resolve({ content });
+function formResponse(content, filePath) {
+  return Promise.resolve({
+    currentFile: {
+      title: filePath.split('/').pop(),
+      __html: content
+    }
+  });
 }
 
 function applyRemark(markdown) {
@@ -34,12 +39,24 @@ function applyRemark(markdown) {
 
 function getFileContent(filePath) {  
   if (path.extname(filePath) == '.md') {
-    return getUTF8String(filePath).then(applyRemark).then(formResponse);
+    return getUTF8String(filePath).then(applyRemark).then(content => formResponse(content, filePath));
   }
 
-  return getUTF8String(filePath).then(formResponse);
+  return getUTF8String(filePath).then(content => formResponse(content, filePath));
+}
+
+function getRootReadme(directory, directoryPath) {
+  const rootReadme = 'README.md';
+
+  const isReadme = directory.directoryEntry.find(entry => 
+    (entry.type == 'file' && entry.name == rootReadme));
+
+  return isReadme
+    ? getFileContent(`${directoryPath}/${rootReadme}`)
+    : Promise.resolve({});
 }
 
 module.exports = {
-  getFileContent
+  getFileContent,
+  getRootReadme
 };

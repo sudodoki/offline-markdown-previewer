@@ -17,11 +17,9 @@ class App extends React.Component {
       path: '?path=.'
     };
 
-    this.getRootReadme = this.getRootReadme.bind(this);
     this.onDirectoryClick = this.onDirectoryClick.bind(this);
     this.traverseToParent = this.traverseToParent.bind(this);
     this.onFileClick = this.onFileClick.bind(this);
-    this.getFile = this.getFile.bind(this);
     this.handleError = this.handleError.bind(this);
     this.removeError = this.removeError.bind(this);
   }
@@ -31,8 +29,6 @@ class App extends React.Component {
       id: Date.now(),
       text: `${res.status}: ${res.statusText}`
     };
-
-    console.error(res);
     
     this.setState({
       errors: this.state.errors.concat(error)
@@ -61,44 +57,15 @@ class App extends React.Component {
     });
   }
 
-  onFileClick(link) {
-    this.getFile(this.state.path, link).then(file => this.setState(file));
+  onFileClick(title) {
+    const path = `${this.state.path}/${title}`;
+    const mapToState = response => this.setState(response);
+
+    api.getFile(path).then(mapToState).catch(this.handleError);
   }
 
-  getFile(path, title) {
-    const newPath = `${path}/${title}`;
-
-    const handleResponse = (response) => {
-      return {
-        currentFile: {
-          title,
-          __html: response.content
-        }
-      };
-    };
-
-    return api.getFile(newPath)
-      .then(handleResponse, this.handleError);
-  }
-
-  getRootReadme(newState) {
-    const rootReadme = 'README.md';
-
-    const isReadme = newState.directoryEntry.find(entry => 
-      (entry.type == 'file' && entry.name == rootReadme));
-
-    const addFile = file => Object.assign({}, newState, file);
-
-    if (isReadme) {
-      return this.getFile(newState.path, rootReadme).then(addFile);
-    
-    } else {
-      return newState;
-    }
-  }
-
-  onDirectoryClick(link) {
-    const newPath = `${this.state.path}/${link}`;
+  onDirectoryClick(title) {
+    const newPath = `${this.state.path}/${title}`;
 
     this.formNewState(newPath).then(newState => {
       window.history.pushState(newState, null, newPath);
@@ -106,24 +73,14 @@ class App extends React.Component {
   }
 
   formNewState(newPath) {
-    const handleResponse = response => {
-      const newState = {
-        directoryEntry: response,
-        path: newPath
-      };
+    const mapToState = response => {
+      const newState = Object.assign({}, response, { path: newPath });
 
-      return newState;
-    };
-
-    const passState = newState => {
       this.setState(newState);
       return newState;
     };
 
-    return api.getTree(newPath)
-      .then(handleResponse)
-      .then(this.getRootReadme)
-      .then(passState);
+    return api.getTree(newPath).then(mapToState).catch(this.handleError);
   }
 
   componentDidMount() {
