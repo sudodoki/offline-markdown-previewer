@@ -13,15 +13,25 @@ class App extends React.Component {
         title: '',
         __html: ''
       },
-      errors: [],
-      path: '?path=.'
+      errors: []
     };
 
     this.onDirectoryClick = this.onDirectoryClick.bind(this);
     this.traverseToParent = this.traverseToParent.bind(this);
+    this.pushNewState = this.pushNewState.bind(this);
     this.onFileClick = this.onFileClick.bind(this);
     this.handleError = this.handleError.bind(this);
     this.removeError = this.removeError.bind(this);
+  }
+
+  componentDidMount() {
+    const initPath = window.location.pathname;
+
+    this.formNewState(initPath).then(newState => {
+      window.history.replaceState(newState, null, `${initPath}`);
+      window.onpopstate = ({ state }) => this.setState(state);
+      this.setState(newState);
+    }).catch(this.handleError);
   }
 
   handleError(res) {
@@ -42,58 +52,59 @@ class App extends React.Component {
   }
 
   traverseToParent() {
-    let newPath = this.state.path.split('/');
+    const last = /[\w-.]*\/$/;
+    const newPath = window.location.pathname.replace(last, '');
     
-    if (newPath.length == 1 || newPath[newPath.length - 1] == '..') {
-      newPath = newPath.concat('..').join('/');
-    
-    } else {
-      newPath.pop();
-      newPath = newPath.join('/');
-    }
+    this.pushNewState(newPath);
+  }
 
-    this.formNewState(newPath).then(newState => {
-      window.history.pushState(newState, null, newPath);
-    });
+  onDirectoryClick(title) {
+    this.pushNewState(`${window.location.pathname}${title}/`);
   }
 
   onFileClick(title) {
-    const path = `${this.state.path}/${title}`;
+    const path = `${window.location.pathname}${title}`;
     const mapToState = response => this.setState(response);
 
     api.getFile(path).then(mapToState).catch(this.handleError);
   }
 
-  onDirectoryClick(title) {
-    const newPath = `${this.state.path}/${title}`;
-
+  pushNewState(newPath) {
     this.formNewState(newPath).then(newState => {
-      window.history.pushState(newState, null, newPath);
+      window.history.pushState(newState, null, `${newPath}`);
+      this.setState(newState);
     });
   }
 
   formNewState(newPath) {
-    const mapToState = response => {
-      const newState = Object.assign({}, response, { path: newPath });
-
-      this.setState(newState);
-      return newState;
-    };
+    const mapToState = response =>
+      Object.assign({}, response, { path: newPath });
 
     return api.getTree(newPath).then(mapToState).catch(this.handleError);
   }
 
-  componentDidMount() {
-    const newPath = window.location.search || this.state.path;
+  createBreadcrumbs(path) {
+    const matched = `.${path}`.match(/[\w-.]*\//g);
 
-    this.formNewState(newPath).then(newState => {
-      window.history.replaceState(newState, null, newPath);
-      window.onpopstate = ({ state }) => this.setState(state);
-    }).catch(this.handleError);
+    return matched.map((title, index, splited) => {
+      const next = index + 1;
+
+      return {
+        url: `/${splited.slice(0, next).join('')}`,
+        isLast: (next == splited.length),
+        title: title.slice(0, -1)
+      };
+    });
   }
 
   render() {
-    const { errors, directoryEntry, currentFile } = this.state;
+    const {
+      errors,
+      directoryEntry,
+      currentFile
+    } = this.state;
+
+    const breadcrumbs = this.createBreadcrumbs(window.location.pathname);
 
     return (
       <Main 
@@ -103,7 +114,9 @@ class App extends React.Component {
         currentFile={currentFile}
         onFileClick={this.onFileClick}
         errors={errors}
+        breadcrumbs={breadcrumbs}
         removeError={this.removeError}
+        isRoot={breadcrumbs.length == 1}
       />
     );
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ErrorMessage from './ErrorMessage';
 
-const ErrorHandler = (props) => {
+const ErrorHandler = props => {
   const { 
     errors,
     removeError 

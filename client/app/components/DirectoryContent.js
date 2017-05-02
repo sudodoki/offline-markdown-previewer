@@ -2,12 +2,13 @@ import React from 'react';
 import FileRow from './FileRow';
 import DirectoryRow from './DirectoryRow';
 
-const DirectoryContent = (props) => {
+const DirectoryContent = props => {
   const { 
     directoryEntry,
     onDirectoryClick,
     onFileClick,
-    goTop
+    goTop,
+    isRoot
   } = props;
 
   let files = directoryEntry.filter(entry => entry.type == 'file')
@@ -15,18 +16,22 @@ const DirectoryContent = (props) => {
   let directories = directoryEntry.filter(entry => entry.type == 'directory')
     .sort(dir => dir.name);
 
-  return (    
+  const toRoot = (
+    <tr onClick={goTop}>
+      <td className='icon'>
+        <i className='fa fa-level-up'></i>
+      </td>
+      <td className='content'>
+        <span>..</span>
+      </td>
+    </tr>
+  );
+
+  return (
     <div className='file-wrap'>
       <table className='files'>
         <tbody>
-          <tr onClick={goTop}>
-            <td className='icon'>
-              <i className='fa fa-level-up'></i>
-            </td>
-            <td className='content'>
-              <span>..</span>
-            </td>
-          </tr>
+          {!isRoot && toRoot}
           {directories.map((dir, index) =>
             <DirectoryRow 
               key={index} 
@@ -56,7 +61,8 @@ DirectoryContent.propTypes = {
   ).isRequired,
   onDirectoryClick: React.PropTypes.func.isRequired,
   onFileClick: React.PropTypes.func.isRequired,
-  goTop: React.PropTypes.func.isRequired
+  goTop: React.PropTypes.func.isRequired,
+  isRoot: React.PropTypes.bool.isRequired
 };
 
 export default DirectoryContent;

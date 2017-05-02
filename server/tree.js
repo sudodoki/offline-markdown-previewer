@@ -43,7 +43,10 @@ function readDirectory(directoryPath) {
 }
 
 function getDirectoryContent(directoryPath) {
-  return readDirectory(directoryPath).then(entry => formResponse(entry, directoryPath));
+  const normalized = path.normalize(directoryPath);
+
+  return readDirectory(normalized)
+    .then(entry => formResponse(entry, normalized));
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FileRow = (props) => {
+const FileRow = props => {
   const { handleClick, name } = props;
 
   return (

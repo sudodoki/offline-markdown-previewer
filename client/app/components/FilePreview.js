@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FilePreview = (props) => {
+const FilePreview = props => {
   const { currentFile } = props;
 
   const article = currentFile.title.includes('.md')
