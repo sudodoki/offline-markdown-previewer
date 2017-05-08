@@ -69,9 +69,11 @@ class App extends React.Component {
       const res = JSON.parse(ev.data);
       
       if (res.event == 'change') {
-        this.getFileContent(this.state.currentFile.title);
+        const { currentFile } = this.state;
+
+        this.getFileContent(currentFile.title);
         this.addNotification({
-          text: 'File changed and was reloaded', 
+          text: `File ${currentFile.title} changed and was reloaded`, 
           type: 'success'
         });
       }
@@ -89,9 +91,9 @@ class App extends React.Component {
       id: Date.now()
     });
 
-    setTimeout(() => 
+    setTimeout(() =>
       this.removeNotification(notification.id),
-    500);
+    2500);
    
     this.setState({
       notifications: notifications.concat(notification)

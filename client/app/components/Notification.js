@@ -10,7 +10,7 @@ const Notification = ({ remove, notification }) =>
 
 Notification.propTypes = {
   notification: React.PropTypes.object.isRequired,
-  removeNotification: React.PropTypes.func.isRequired
+  remove: React.PropTypes.func.isRequired
 };
 
 export default Notification;
