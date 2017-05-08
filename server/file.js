@@ -39,7 +39,9 @@ function applyRemark(markdown) {
 
 function getFileContent(filePath) {  
   if (path.extname(filePath) == '.md') {
-    return getUTF8String(filePath).then(applyRemark).then(content => formResponse(content, filePath));
+    return getUTF8String(filePath)
+      .then(applyRemark)
+      .then(content => formResponse(content, filePath));
   }
 
   return getUTF8String(filePath).then(content => formResponse(content, filePath));
