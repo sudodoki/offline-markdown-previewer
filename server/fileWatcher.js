@@ -9,22 +9,15 @@ const wss = new WebSocket.Server({
 
 let ws = null;
 
-wss.on('connection', connection => ws = connection);
+const notify = event => ws.send(JSON.stringify({ event }));
 
-function notify(title, event) {
-  const response = JSON.stringify({
-    title,
-    event
-  });
-  
-  ws.send(response);
-}
+wss.on('connection', connection => ws = connection);
 
 function subscribe(fileTitle) {
   watcher
     .close()
     .add(fileTitle)
-    .on('change', () => notify(fileTitle, 'change'));
+    .on('change', () => notify('change'));
 }
 
 module.exports = { subscribe };
