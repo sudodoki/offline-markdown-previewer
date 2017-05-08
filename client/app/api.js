@@ -13,3 +13,10 @@ export function getFile(path) {
         : res.json()
       );
 }
+
+export function subscribeToSocket(onMessage, onError) {
+  const socket = new WebSocket('ws://localhost:8081');
+
+  socket.onmessage = ev => onMessage(JSON.parse(ev.data));
+  socket.onerror = error => onError(error);
+}

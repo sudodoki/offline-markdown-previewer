@@ -4,6 +4,12 @@ const lint = require('remark-lint');
 const html = require('remark-html');
 const path = require('path');
 
+let currentFilePath = '';
+
+function isEqual(another) {
+  return path.resolve(another) == currentFilePath;
+}
+
 function getUTF8String(fileName) {
   return new Promise((resolve, reject) => {
     fs.readFile(fileName, (err, fileContent) => {
@@ -27,24 +33,30 @@ function formResponse(content, filePath) {
 
 function applyRemark(markdown) {
   return new Promise((resolve, reject) => {
-    remark().use(lint).use(html).process(markdown, (err, markdownHtml) => {
-      if (err) {
-        reject(err.message);
-      }
+    remark()
+      .use(lint)
+      .use(html)
+      .process(markdown, (err, markdownHtml) => {
+        if (err) {
+          reject(err.message);
+        }
 
-      resolve(String(markdownHtml));
-    });
+        resolve(String(markdownHtml));
+      });
   });
 }
 
-function getFileContent(filePath) {  
+function getFileContent(filePath) {
+  currentFilePath = path.resolve(filePath);
+
   if (path.extname(filePath) == '.md') {
     return getUTF8String(filePath)
       .then(applyRemark)
       .then(content => formResponse(content, filePath));
   }
 
-  return getUTF8String(filePath).then(content => formResponse(content, filePath));
+  return getUTF8String(filePath)
+    .then(content => formResponse(content, filePath));
 }
 
 function getRootReadme(directory, directoryPath) {
@@ -60,5 +72,6 @@ function getRootReadme(directory, directoryPath) {
 
 module.exports = {
   getFileContent,
-  getRootReadme
+  getRootReadme,
+  isEqual
 };

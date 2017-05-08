@@ -63,12 +63,8 @@ class App extends React.Component {
   }
 
   subscribeToSocket() {
-    const socket = new WebSocket('ws://localhost:8081');
-
-    socket.onmessage = ev => {
-      const res = JSON.parse(ev.data);
-      
-      if (res.event == 'change') {
+    const handleMessage = ({ event }) => {
+      if (event == 'change') {
         const { currentFile } = this.state;
 
         this.getFileContent(currentFile.title);
@@ -79,9 +75,11 @@ class App extends React.Component {
       }
     };
 
-    socket.onerror = error => {
-      this.addNotification(error.message, 'error');
+    const handleError = ({ message }) => {
+      this.addNotification(message, 'error');
     };
+
+    api.subscribeToSocket(handleMessage, handleError);
   }
 
   addNotification(params) {

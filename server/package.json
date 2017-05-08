@@ -4,7 +4,8 @@
   "description": "Backend subproject for offline-markdown-previewer",
   "main": "server.js",
   "config": {
-    "port": "8080"
+    "http_port": "8080",
+    "ws_port": "8081"
   },
   "scripts": {
     "test": "server script",
