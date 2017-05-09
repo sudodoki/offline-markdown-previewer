@@ -80,7 +80,11 @@ class App extends React.Component {
     };
 
     const handleError = ({ message }) => {
-      this.addNotification(message, 'error');
+      this.addNotification({
+        text: message,
+        className: 'error',
+        type: 'error'
+      });
     };
 
     api.subscribeToSocket(handleMessage, handleError);
