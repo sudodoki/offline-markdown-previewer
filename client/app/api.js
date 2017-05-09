@@ -1,5 +1,10 @@
+  /*global WS_PORT HTTP_PORT:true*/
+
+const wsPort = WS_PORT;
+const httpPort = HTTP_PORT;
+
 export function getTree(path) {
-  return fetch(`http://localhost:8080/api/tree/?path=.${path}`)
+  return fetch(`http://localhost:${httpPort}/api/tree/?path=.${path}`)
       .then(res => (!res.ok || res.status == 204) 
         ? Promise.reject(res) 
         : res.json()
@@ -7,7 +12,7 @@ export function getTree(path) {
 }
 
 export function getFile(path) {
-  return fetch(`http://localhost:8080/api/file/?path=.${path}`)
+  return fetch(`http://localhost:${httpPort}/api/file/?path=.${path}`)
       .then(res => (!res.ok || res.status == 204) 
         ? Promise.reject(res) 
         : res.json()
@@ -15,7 +20,7 @@ export function getFile(path) {
 }
 
 export function subscribeToSocket(onMessage, onError) {
-  const socket = new WebSocket('ws://localhost:8081');
+  const socket = new WebSocket(`ws://localhost:${wsPort}`);
 
   socket.onmessage = ev => onMessage(JSON.parse(ev.data));
   socket.onerror = error => onError(error);

@@ -4,8 +4,8 @@ const FilePreview = props => {
   const { currentFile } = props;
 
   const article = currentFile.title.includes('.md')
-    ? <article className='markdown-body entry-content' dangerouslySetInnerHTML={currentFile} />
-    : <article className='markdown-body entry-content'><pre>{currentFile.__html}</pre></article>;
+    ? <article className='markdown-body entry-content' dangerouslySetInnerHTML={{ __html: currentFile.html }} />
+    : <article className='markdown-body entry-content'><pre>{currentFile.html}</pre></article>;
 
   return (
     <div id='readme' className='readme boxed-group clearfix announce instapaper_body md'>

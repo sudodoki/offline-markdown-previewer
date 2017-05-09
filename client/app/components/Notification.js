@@ -2,7 +2,7 @@ import React from 'react';
 
 const Notification = ({ remove, notification }) => 
   <div 
-    className={`${notification.type} notification`}
+    className={`${notification.className} notification`}
     onClick={remove.bind(null, notification.id)}
   >
     {notification.text}

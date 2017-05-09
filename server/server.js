@@ -11,13 +11,15 @@ const wss = new WebSocket.Server({
 });
 
 wss.on('connection', ws => {
-  const notifier = event => {
-    ws.send(JSON.stringify({
-      event
-    }));
+  const notifier = payload => {
+    ws.send(JSON.stringify(payload));
   };
 
-  changeWatcher.subscribe(notifier);
+  const watcher = changeWatcher.subscribe(notifier);
+
+  ws.on('close', () => {
+    changeWatcher.unsubscribe(watcher);
+  });
 });
 
 const app = express();

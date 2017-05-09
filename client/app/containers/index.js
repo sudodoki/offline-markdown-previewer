@@ -11,7 +11,8 @@ class App extends React.Component {
       directoryEntry: [],
       currentFile: {
         title: '',
-        __html: ''
+        html: '',
+        fullPath: ''
       },
       notifications: []
     };
@@ -37,6 +38,7 @@ class App extends React.Component {
       .catch(res => {
         this.addNotification({
           text: `${res.status}: ${res.statusText}`,
+          className: 'error',
           type: 'error'
         });
       });
@@ -57,20 +59,22 @@ class App extends React.Component {
       .catch(res => {
         this.addNotification({
           text: `${res.status}: ${res.statusText}`,
+          className: 'error',
           type: 'error'
         });
       });
   }
 
   subscribeToSocket() {
-    const handleMessage = ({ event }) => {
-      if (event == 'change') {
-        const { currentFile } = this.state;
-
+    const handleMessage = ({ event, path }) => {
+      const { currentFile } = this.state;
+      
+      if (event == 'change' && currentFile.fullPath == path) {
         this.getFileContent(currentFile.title);
         this.addNotification({
           text: `File ${currentFile.title} changed and was reloaded`, 
-          type: 'success'
+          className: 'success',
+          type: 'file-changed'
         });
       }
     };
@@ -83,19 +87,29 @@ class App extends React.Component {
   }
 
   addNotification(params) {
-    const { notifications } = this.state;
-
     const notification = Object.assign({}, params, {
       id: Date.now()
     });
 
-    setTimeout(() =>
-      this.removeNotification(notification.id),
-    2500);
-   
+    if (notification.type != 'error') {
+      setTimeout(() => {
+        const { notifications } = this.state;
+
+        const changes = notifications.filter(notif => {
+          return notif.type == 'file-changed';
+        });
+
+        if (changes.length > 1) {
+          this.removeNotification(notification.id);
+        }
+      }, 2500);
+    }
+
+    const { notifications } = this.state;
+  
     this.setState({
       notifications: notifications.concat(notification)
-    });
+    });    
   }
 
   removeNotification(id) {
@@ -129,6 +143,7 @@ class App extends React.Component {
       .catch(res => {
         this.addNotification({
           text: `${res.status}: ${res.statusText}`,
+          className: 'error',
           type: 'error'
         });
       });

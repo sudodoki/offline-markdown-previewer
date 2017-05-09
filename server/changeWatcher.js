@@ -1,14 +1,18 @@
 const chokidar = require('chokidar');
-const file = require('./file');
+const path = require('path');
+
 
 function subscribe(notify) {
-  chokidar
+  return chokidar
     .watch('.')
-    .on('change', filePath => {
-      if (file.isEqual(filePath)) {
-        notify('change');
-      }
-    });
+    .on('change', filePath => notify({
+      path: path.resolve(filePath),
+      event: 'change'
+    }));
 }
 
-module.exports = { subscribe };
+function unsubscribe(chokidarWatcher) {
+  chokidarWatcher.close();
+}
+
+module.exports = { subscribe, unsubscribe };

@@ -129,7 +129,7 @@ blockquote {
 }
 
 .notification-handler {
-    position: absolute;
+    position: fixed;
     right: 1vw;
     top: 1vh;
 }
@@ -151,7 +151,6 @@ blockquote {
     color: #fff;
     opacity: .8;
     cursor: pointer;
-
 }
 
 .notification.error {
