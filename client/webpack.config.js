@@ -14,7 +14,11 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin('styles.css'),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      HTTP_PORT: JSON.stringify('8080'),
+      WS_PORT: JSON.stringify('8081')
+    })
   ],
   module: {
     rules: [{

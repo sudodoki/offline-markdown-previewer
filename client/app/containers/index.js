@@ -11,43 +11,116 @@ class App extends React.Component {
       directoryEntry: [],
       currentFile: {
         title: '',
-        __html: ''
+        html: '',
+        fullPath: ''
       },
-      errors: []
+      notifications: []
     };
 
-    this.onDirectoryClick = this.onDirectoryClick.bind(this);
+    this.getDirectoryContent = this.getDirectoryContent.bind(this);
     this.traverseToParent = this.traverseToParent.bind(this);
     this.pushNewState = this.pushNewState.bind(this);
-    this.onFileClick = this.onFileClick.bind(this);
-    this.handleError = this.handleError.bind(this);
-    this.removeError = this.removeError.bind(this);
+    this.getFileContent = this.getFileContent.bind(this);
+    this.addNotification = this.addNotification.bind(this);
+    this.removeNotification = this.removeNotification.bind(this);
+    this.subscribeToSocket = this.subscribeToSocket.bind(this);
   }
 
   componentDidMount() {
     const initPath = window.location.pathname;
 
-    this.formNewState(initPath).then(newState => {
-      window.history.replaceState(newState, null, `${initPath}`);
-      window.onpopstate = ({ state }) => this.setState(state);
-      this.setState(newState);
-    }).catch(this.handleError);
+    this.formNewState(initPath)
+      .then(newState => {
+        window.history.replaceState(newState, null, `${initPath}`);
+        window.onpopstate = ({ state }) => this.setState(state);
+        this.setState(newState);
+      })
+      .catch(res => {
+        this.addNotification({
+          text: `${res.status}: ${res.statusText}`,
+          className: 'error',
+          type: 'error'
+        });
+      });
+
+    this.subscribeToSocket();
   }
 
-  handleError(res) {
-    const error = {
-      id: Date.now(),
-      text: `${res.status}: ${res.statusText}`
+  getDirectoryContent(title) {
+    this.pushNewState(`${window.location.pathname}${title}/`);
+  }
+
+  getFileContent(title) {
+    const path = `${window.location.pathname}${title}`;
+    const mapToState = response => this.setState(response);
+
+    api.getFile(path)
+      .then(mapToState)
+      .catch(res => {
+        this.addNotification({
+          text: `${res.status}: ${res.statusText}`,
+          className: 'error',
+          type: 'error'
+        });
+      });
+  }
+
+  subscribeToSocket() {
+    const handleMessage = ({ event, path }) => {
+      const { currentFile } = this.state;
+      
+      if (event == 'change' && currentFile.fullPath == path) {
+        this.getFileContent(currentFile.title);
+        this.addNotification({
+          text: `File ${currentFile.title} changed and was reloaded`, 
+          className: 'success',
+          type: 'file-changed'
+        });
+      }
     };
-    
-    this.setState({
-      errors: this.state.errors.concat(error)
-    });
+
+    const handleError = ({ message }) => {
+      this.addNotification({
+        text: message,
+        className: 'error',
+        type: 'error'
+      });
+    };
+
+    api.subscribeToSocket(handleMessage, handleError);
   }
 
-  removeError(id) {
+  addNotification(params) {
+    const notification = Object.assign({}, params, {
+      id: Date.now()
+    });
+
+    if (notification.type != 'error') {
+      setTimeout(() => {
+        const { notifications } = this.state;
+
+        const changes = notifications.filter(notif => {
+          return notif.type == 'file-changed';
+        });
+
+        if (changes.length > 1) {
+          this.removeNotification(notification.id);
+        }
+      }, 2500);
+    }
+
+    const { notifications } = this.state;
+  
     this.setState({
-      errors: this.state.errors.filter(error => error.id != id)
+      notifications: notifications.concat(notification)
+    });    
+  }
+
+  removeNotification(id) {
+    const { notifications } = this.state;
+
+    this.setState({
+      notifications: notifications.filter(notif => notif.id != id)
     });
   }
 
@@ -56,17 +129,6 @@ class App extends React.Component {
     const newPath = window.location.pathname.replace(last, '');
     
     this.pushNewState(newPath);
-  }
-
-  onDirectoryClick(title) {
-    this.pushNewState(`${window.location.pathname}${title}/`);
-  }
-
-  onFileClick(title) {
-    const path = `${window.location.pathname}${title}`;
-    const mapToState = response => this.setState(response);
-
-    api.getFile(path).then(mapToState).catch(this.handleError);
   }
 
   pushNewState(newPath) {
@@ -80,7 +142,15 @@ class App extends React.Component {
     const mapToState = response =>
       Object.assign({}, response, { path: newPath });
 
-    return api.getTree(newPath).then(mapToState).catch(this.handleError);
+    return api.getTree(newPath)
+      .then(mapToState)
+      .catch(res => {
+        this.addNotification({
+          text: `${res.status}: ${res.statusText}`,
+          className: 'error',
+          type: 'error'
+        });
+      });
   }
 
   createBreadcrumbs(path) {
@@ -99,7 +169,7 @@ class App extends React.Component {
 
   render() {
     const {
-      errors,
+      notifications,
       directoryEntry,
       currentFile
     } = this.state;
@@ -110,12 +180,12 @@ class App extends React.Component {
       <Main 
         directoryEntry={directoryEntry}
         goTop={this.traverseToParent}
-        onDirectoryClick={this.onDirectoryClick}
         currentFile={currentFile}
-        onFileClick={this.onFileClick}
-        errors={errors}
+        onDirectoryClick={this.getDirectoryContent}
+        onFileClick={this.getFileContent}
+        notifications={notifications}
         breadcrumbs={breadcrumbs}
-        removeError={this.removeError}
+        removeNotification={this.removeNotification}
         isRoot={breadcrumbs.length == 1}
       />
     );

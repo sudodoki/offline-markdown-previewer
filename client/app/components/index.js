@@ -1,7 +1,7 @@
 import React from 'react';
 import DirectoryContent from './DirectoryContent';
 import FilePreview from './FilePreview';
-import ErrorHandler from './ErrorHandler';
+import Notifier from './Notifier';
 import Breadcrumbs from './Breadcrumbs';
 
 const Main = props => {
@@ -9,8 +9,8 @@ const Main = props => {
     directoryEntry, 
     onDirectoryClick,
     onFileClick,
-    errors,
-    removeError,
+    notifications,
+    removeNotification,
     currentFile,
     breadcrumbs,
     goTop,
@@ -30,9 +30,9 @@ const Main = props => {
         isRoot={isRoot}
       />
       {currentFile.title && <FilePreview currentFile={currentFile} />}
-      <ErrorHandler
-        errors={errors}
-        removeError={removeError} 
+      <Notifier
+        notifications={notifications}
+        removeNotification={removeNotification} 
       />
     </div>
   );
@@ -40,8 +40,8 @@ const Main = props => {
 
 React.propTypes = {
   directoryEntry: React.PropTypes.array.isRequired,
-  errors: React.PropTypes.array.isRequired,
-  removeError: React.PropTypes.func.isRequired,
+  notifications: React.PropTypes.array.isRequired,
+  removeNotification: React.PropTypes.func.isRequired,
   onDirectoryClick: React.PropTypes.func.isRequired,
   onFileClick: React.PropTypes.func.isRequired,
   breadcrumbs: React.PropTypes.array.isRequired,

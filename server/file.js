@@ -20,29 +20,36 @@ function formResponse(content, filePath) {
   return Promise.resolve({
     currentFile: {
       title: filePath.split('/').pop(),
-      __html: content
+      html: content,
+      fullPath: path.resolve(filePath)
     }
   });
 }
 
 function applyRemark(markdown) {
   return new Promise((resolve, reject) => {
-    remark().use(lint).use(html).process(markdown, (err, markdownHtml) => {
-      if (err) {
-        reject(err.message);
-      }
+    remark()
+      .use(lint)
+      .use(html)
+      .process(markdown, (err, markdownHtml) => {
+        if (err) {
+          reject(err.message);
+        }
 
-      resolve(String(markdownHtml));
-    });
+        resolve(String(markdownHtml));
+      });
   });
 }
 
-function getFileContent(filePath) {  
+function getFileContent(filePath) {
   if (path.extname(filePath) == '.md') {
-    return getUTF8String(filePath).then(applyRemark).then(content => formResponse(content, filePath));
+    return getUTF8String(filePath)
+      .then(applyRemark)
+      .then(content => formResponse(content, filePath));
   }
 
-  return getUTF8String(filePath).then(content => formResponse(content, filePath));
+  return getUTF8String(filePath)
+    .then(content => formResponse(content, filePath));
 }
 
 function getRootReadme(directory, directoryPath) {

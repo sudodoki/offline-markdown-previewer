@@ -4,7 +4,8 @@
   "description": "Backend subproject for offline-markdown-previewer",
   "main": "server.js",
   "config": {
-    "port": "8080"
+    "http_port": "8080",
+    "ws_port": "8081"
   },
   "scripts": {
     "test": "server script",
@@ -22,10 +23,12 @@
   },
   "homepage": "https://github.com/sudodoki/offline-markdown-previewer#readme",
   "dependencies": {
+    "chokidar": "^1.6.1",
     "github-markdown-css": "^2.4.0",
     "remark": "^7.0.0",
     "remark-html": "^6.0.0",
-    "remark-lint": "^6.0.0"
+    "remark-lint": "^6.0.0",
+    "ws": "^2.3.1"
   },
   "devDependencies": {
     "express": "^4.14.1"

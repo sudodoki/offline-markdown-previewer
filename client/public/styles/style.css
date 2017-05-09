@@ -128,13 +128,13 @@ blockquote {
     border-bottom: 1px solid #eaecef;
 }
 
-.error-handler {
-    position: absolute;
+.notification-handler {
+    position: fixed;
     right: 1vw;
     top: 1vh;
 }
 
-.error {
+.notification {
     position: relative;
     pointer-events: auto;
     overflow: hidden;
@@ -151,10 +151,17 @@ blockquote {
     color: #fff;
     opacity: .8;
     cursor: pointer;
+}
+
+.notification.error {
     background: #bd362f;
 }
 
-.error:hover {
+.notification.success {
+    background: #1ab394;
+}
+
+.notification:hover {
     -moz-box-shadow: 0 0 12px #000;
     -webkit-box-shadow: 0 0 12px #000;
     box-shadow: 0 0 12px #000;
