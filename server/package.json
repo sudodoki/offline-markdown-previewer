@@ -4,8 +4,8 @@
   "description": "Backend subproject for offline-markdown-previewer",
   "main": "server.js",
   "config": {
-    "http_port": "8080",
-    "ws_port": "8081"
+    "http": "8080",
+    "ws": "8081"
   },
   "scripts": {
     "test": "server script",
@@ -28,9 +28,7 @@
     "remark": "^7.0.0",
     "remark-html": "^6.0.0",
     "remark-lint": "^6.0.0",
-    "ws": "^2.3.1"
-  },
-  "devDependencies": {
+    "ws": "^2.3.1",
     "express": "^4.14.1"
   }
 }

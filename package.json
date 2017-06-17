@@ -7,6 +7,10 @@
     "lint-staged": "lint-staged",
     "build": "cd client && SET BABEL_ENV=production && ./node_modules/.bin/webpack --config webpack.config.production.js"
   },
+  "preferGlobal": true,
+  "bin": {
+    "offline-markdown-previewer": "./server/server.js"
+  },
   "lint-staged": {
     "*.js": "eslint"
   },
